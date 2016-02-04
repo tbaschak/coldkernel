@@ -76,6 +76,9 @@ function patch_kernel () {
 	patch -p1 < ../patches/grsecurity/grsecurity-$GRSECVERSION-$VERSION-*.patch
     cp ../coldkernel.config .config
 }
+function patch_kernel2 () {
+    sleep 10s
+}
 
 # Build coldkernel
 function build_kernel () {
@@ -151,6 +154,9 @@ case "$1" in
 	 stop_spinner $?
 	 start_spinner "Applying grsecurity patch, and moving coldkernel.config into place..."
 	 patch_kernel > /dev/null 2>&1 &&
+	 stop_spinner $?
+	 start_spinner "Doing octomerge of other Linux Kernel patches..."
+	 patch_kernel2 > /dev/null 2>&1 &&
 	 stop_spinner $?
 	 start_spinner "Building coldkernel..."
 	 build_kernel > /dev/null 2>&1
